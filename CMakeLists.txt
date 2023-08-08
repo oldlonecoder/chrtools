@@ -53,7 +53,7 @@ target_link_libraries(${TargetName} ${CMAKE_DL_LIBS})
 
 install(DIRECTORY
         include/${TargetName}/
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/include/${FrameWorkName}.${Name}"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/include/${TargetName}"
 )
 
 install(TARGETS ${TargetName}
