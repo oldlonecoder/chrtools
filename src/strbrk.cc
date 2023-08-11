@@ -10,7 +10,7 @@
  *   Copyrights from authors other than Serge Lussier also apply here      *
  ***************************************************************************/
 
-#include <chrtools/strbrk.h>
+#include "chrtools/strbrk.h"
 
 
 [[maybe_unused]] std::string strbrk::_default_token_separators = "\\%(){}[]`$#@!;,~?^&<>=+-*/:.";

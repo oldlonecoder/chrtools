@@ -10,7 +10,7 @@
  *   Copyrights from authors other than Serge Lussier also apply here      *
  ***************************************************************************/
 
-#include <chrtools/Icons.h>
+#include "chrtools/Icons.h"
 #include <map>
 
 

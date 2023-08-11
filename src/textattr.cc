@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 
-#include <chrtools/textattr.h>
+#include "chrtools/textattr.h"
 
 
 

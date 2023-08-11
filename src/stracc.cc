@@ -10,7 +10,7 @@
  *   Copyrights from authors other than Serge Lussier also apply here      *
  ***************************************************************************/
 
-#include <chrtools/stracc.h>
+#include "chrtools/stracc.h"
 
 
 
