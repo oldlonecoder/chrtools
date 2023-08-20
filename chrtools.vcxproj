@@ -112,8 +112,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>rem xcopy  $(TargetDir)\$(ProjectName).dll $(HOMEDRIVE)$(HOMEPATH)\libraries\binaries    /Y
-rem xcopy  $(TargetDir)\$(ProjectName).lib $(HOMEDRIVE)$(HOMEPATH)\libraries\binaries  /Y
+      <Command>xcopy  $(TargetDir)\$(ProjectName).dll $(HOMEDRIVE)$(HOMEPATH)\libraries\binaries    /Y
+xcopy  $(TargetDir)\$(ProjectName).lib $(HOMEDRIVE)$(HOMEPATH)\libraries\binaries  /Y
 xcopy $(SolutionDir)include $(HOMEDRIVE)$(HOMEPATH)\libraries\include   /Y  /I  /E
 
 </Command>
