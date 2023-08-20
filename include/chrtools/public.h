@@ -14,10 +14,10 @@
 #   else
 #       define STR_PUBLIC __declspec(dllimport)
 #   endif
-
+#   define NOMINMAX
 #   include <Windows.h> // Must be included before anything else
 #   include <shlwapi.h>
-//#   include <winsqlite3/winaqlite3.h> // Ne fonctionne plus, allez savoir!
+#   include <winsqlite/winsqlite3.h> // Ne fonctionne plus, allez savoir! -- La on sait : C'est mon cerveau qui ne fonctionnait plus!
 
 
 #   define __PRETTY_FUNCTION__ __FUNCSIG__

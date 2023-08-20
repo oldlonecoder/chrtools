@@ -64,8 +64,8 @@ struct STR_PUBLIC point
         return {dxy.x+x, dxy.y+y};
     }
 
-    point max ( const point& b) const;
-    point min ( const point& b) const;
+    point maximum ( const point& b) const;
+    point minimum ( const point& b) const;
     point operator - (const point& dxy) const
     {
         return { x - dxy.x, y - dxy.y };
@@ -91,8 +91,8 @@ struct STR_PUBLIC dim
     int w = 0;
     int h = 0;
 
-    point min{};
-    point max{};
+    point minmum{};
+    point maximum{};
 
     operator bool() const { return ((w > 0) && ( h > 0)); }
     operator std::string() const;
@@ -102,7 +102,7 @@ struct STR_PUBLIC dim
     bool operator > (const dim& dwh) const ;
     bool operator != (const dim& dwh) const;
 
-    bool size_policy() const { return !((min.x <= 0) && (min.y <= 0) && (max.x <= 0) && (max.y <= 0));}
+    bool size_policy() const { return !((minmum.x <= 0) && (minmum.y <= 0) && (maximum.x <= 0) && (maximum.y <= 0));}
 
     T area() const { return w * h; }
 };

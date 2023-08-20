@@ -91,7 +91,7 @@ dim::operator std::string() const
     if(size_policy())
     {
         str = "(%d/(%d,%d),%d/(%d,%d)):%d";
-        str << w << min.x << max.x << h << min.y << max.y << w*h;
+        str << w << minmum.x << maximum.x << h << minmum.y << maximum.y << w*h;
     }
     else
     {
@@ -243,7 +243,7 @@ winbuffer & winbuffer::operator<<(point xy)
     return *this;
 }
 
-point point::max(const point &b) const
+point point::maximum(const point &b) const
 {
     point c;
     if(x <= b.x) c.x = b.x; else c.x = x;
@@ -251,7 +251,7 @@ point point::max(const point &b) const
     return c;
 }
 
-point point::min(const point &b) const
+point point::minimum(const point &b) const
 {
     point c;
     if(x >= b.x) c.x = b.x; else c.x = x;
