@@ -357,16 +357,16 @@ struct STR_PUBLIC  color_data
 
 
 
-template<chattr::format> class  attr : public chattr {};
+template<chattr::format> class STR_PUBLIC attr : public chattr {};
 
-template<> class attr<chattr::format::ansi256> : public chattr
+template<> class STR_PUBLIC attr<chattr::format::ansi256> : public chattr
 {
 public:
     static std::string fg(color::type color_);
     static std::string bg(color::type color_);
 };
 
-template<> class  attr<chattr::format::html> : public chattr
+template<> class  STR_PUBLIC attr<chattr::format::html> : public chattr
 {
 public:
     static std::string fg(color::type color_);
