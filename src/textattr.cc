@@ -466,6 +466,7 @@ std::string chattr::ansi_bk(color::type aColorID)
     return Out.str();
 }
 
+
 std::string chattr::name(color::type aColorEnum)
 {
     return ColorDB[aColorEnum].Name.data();
@@ -490,3 +491,13 @@ attr_item &attribute_list::operator[](const std::string &id_)
 }
 
 
+
+std::string attr<chattr::format::ansi256>::endl()
+{
+    return "\n";
+}
+
+std::string attr<chattr::format::html>::endl()
+{
+    return "<br />";
+}

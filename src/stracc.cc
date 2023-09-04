@@ -95,7 +95,6 @@ stracc::~stracc()
 
 stracc &stracc::fill(char c, int count)
 {
-    //std::fill_n(_d.begin(), count, c);
     _d += std::string(count, c);
     return *this;
 }
