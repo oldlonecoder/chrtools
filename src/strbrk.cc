@@ -179,13 +179,13 @@ strbrk::iterator strbrk::scan_to(strbrk::iterator aStart, char c) const
     * @brief break/split/tokenize,etc... the content of a string into pieces.
     * @param strbrk::token_t::list  OUTPUT reference to the 'Tokens array' containter, filled by this method.
     * @param aDelimiters Separators in the form of a std::sting_view of ascii-8 characters.
-    * @param keep_as_word if true (or non-zero), the Separators will be put into the collection as token where they appear
+    * @param opt option to keep separators as token and put into the stream as they appear.
     * @return number of "Words/tokens" contained into the collection.
     * @notice : After several years of experience and experimentations, We have determined that
     * white-spaces/ctrl or spacing characters are silent and implicit delimiters, in addition to the ones supplied by \c aDelimiters.
     */
 
-std::size_t strbrk::operator()(strbrk::token_t::list &Collection, std::string aDelimiters, bool KeepAsWord) const
+std::size_t strbrk::operator()(strbrk::token_t::list &Collection, std::string aDelimiters, strbrk::opt aopt) const
 {
 
     strbrk::s_p_s Crs;
@@ -223,7 +223,7 @@ std::size_t strbrk::operator()(strbrk::token_t::list &Collection, std::string aD
             if((*Crs._pos == '/') && (*(Crs._pos + 1) == '/'))
                 ++Crs;
 
-            if(KeepAsWord)
+            if(aopt == strbrk::opt::keep)
             {
                 Collection.push_back({w.mStart, Crs._pos, Crs._end, w.mLine, w.mCol, w.mPosition});
             }
@@ -240,18 +240,18 @@ std::size_t strbrk::operator()(strbrk::token_t::list &Collection, std::string aD
         else if((*Crs._pos == '\'') || (*Crs._pos == '"'))
         { // Quoted litteral string...
             Crs >> w;
-            if(KeepAsWord)
+            if(aopt == strbrk::opt::keep)
             {
                 // Create the three parts of the quoted string: (") + (litteral) + (") ( or ' )
                 // So, we save the token_t coords anyway.
                 Collection.push_back({w.mStart, w.mStart, Crs._end, w.mLine, w.mCol, w.mPosition});
             }
 
-            strbrk::iterator p = scan_to(w.mStart + (KeepAsWord ? 0 : 1), *Crs._pos); // w.B is the starting position, _Cursor.m is the quote delim.
+            strbrk::iterator p = scan_to(w.mStart + (aopt == strbrk::opt::keep ? 0 : 1), *Crs._pos); // w.B is the starting position, _Cursor.m is the quote delim.
             while(Crs._pos < p)
                 ++Crs; // compute white spaces!!!
 
-            if(KeepAsWord)
+            if(aopt == strbrk::opt::keep)
             {
                 // then push the litteral that is inside the quotes.
                 Collection.push_back({w.mStart + 1, p - 1, Crs._end, w.mLine, w.mCol, w.mPosition});

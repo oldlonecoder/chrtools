@@ -178,7 +178,7 @@ public:
         _d += out.str();
         return *this;
     }
-
+    std::size_t len() { return _d.length(); }
     std::string& str() { return _d; }
 
     static std::string make_str(const char* B, const char* E);
