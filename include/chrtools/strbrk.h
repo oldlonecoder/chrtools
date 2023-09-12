@@ -21,8 +21,9 @@ using std::string;
 class STR_PUBLIC strbrk
 {
     [[maybe_unused]] static std::string _default_token_separators;
-    using iterator = std::string::const_iterator;
+    using iterator = std::string_view::iterator;
     using list     = std::vector<std::string>;
+
  public:
 
     enum opt{
@@ -32,43 +33,44 @@ class STR_PUBLIC strbrk
     strbrk() = default;
     ~strbrk() = default;
 
-    struct STR_PUBLIC  token_t
+    struct STR_PUBLIC  word
     {
-        std::string::const_iterator mStart;
-        std::string::const_iterator mEnd;
-        std::string::const_iterator mSE;
+        strbrk::iterator begin;
+        strbrk::iterator end;
+        strbrk::iterator str_end;
 
         std::string operator()() const;
         std::string operator*() const;
 
-        using list = std::vector<strbrk::token_t>;
-        using iterator = strbrk::token_t::list::iterator;
-        [[maybe_unused]] [[nodiscard]] std::string Mark() const;
+        using list = std::vector<strbrk::word>;
+        using iterator = strbrk::word::list::iterator;
+        [[maybe_unused]] [[nodiscard]] std::string mark() const;
 
-        int         mLine     = 1;
-        int         mCol      = 1;
-        std::size_t mPosition = 0;
-
+        int         line   = 1;
+        int         column = 1;
+        std::size_t offset = 0;
         std::string location();
     };
 
     struct STR_PUBLIC  config_data
     {
-        const char* c;
-        std::string delimiters;
+        std::string_view c;
+        std::string_view delimiters;
         strbrk::opt o;
-        strbrk::token_t::list tokens;
+        strbrk::word::list words;
     };
 
+    config_data& config() { return data; }
+//    std::size_t operator()(strbrk::word::list &Collection, std::string aDelimiters = "", strbrk::opt aopt = strbrk::keep) const;
+    std::size_t operator()();
 
-    std::size_t operator()(strbrk::token_t::list &Collection, std::string aDelimiters = "", strbrk::opt aopt = strbrk::keep) const;
     strbrk::iterator scan_to(strbrk::iterator start_, char c_) const;
 private:
     struct s_p_s
     {
-        std::string::const_iterator _begin;
-        std::string::const_iterator _pos;
-        std::string::const_iterator _end; /// ...
+        std::string_view::iterator _begin;
+        std::string_view::iterator _pos;
+        std::string_view::iterator _end; /// ...
 
         int      _line  = 1;
         int      _col   = 1;
@@ -77,24 +79,20 @@ private:
         s_p_s() = default;
         ~s_p_s() = default;
 
-        explicit s_p_s(const std::string& str_);
+        explicit s_p_s(std::string_view str_);
         bool skip_ws();
         [[nodiscard]] bool end() const;
         bool operator++();
         bool operator++(int);
-        void reset(const std::string& str_)
+        void reset(std::string_view str_)
         {
-            _pos   = _begin = str_.cbegin();
+            _pos   = _begin = str_.begin();
             _line  = _col   = 1;
             _index = 0;
-            _end  = str_.cend();
+            _end  = str_.end();
         }
-        s_p_s &operator>>(strbrk::token_t &word_);
+        s_p_s &operator>>(strbrk::word &word_);
     } _cursor;
-public:
-    strbrk& operator=(const std::string& str_);
-    strbrk& operator=(const char* str_);
-    std::string operator()(){ return data.c; }
 private:
     config_data data;
 
