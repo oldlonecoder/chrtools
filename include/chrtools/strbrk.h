@@ -60,10 +60,10 @@ class STR_PUBLIC strbrk
         strbrk::word::list words;
     };
 
-    config_data& config() { return data; }
+    //config_data& config() { return data; }
 //    std::size_t operator()(strbrk::word::list &Collection, std::string aDelimiters = "", strbrk::opt aopt = strbrk::keep) const;
-    std::size_t operator()();
-
+    //std::size_t operator()();
+    std::size_t operator()(strbrk::config_data& dt);
     strbrk::iterator scan_to(strbrk::iterator start_, char c_) const;
 private:
     struct s_p_s
@@ -91,10 +91,14 @@ private:
             _index = 0;
             _end  = str_.end();
         }
+        int scan_string();
+
         s_p_s &operator>>(strbrk::word &word_);
     } _cursor;
+
+    bool append(s_p_s& cursor, strbrk::config_data& dat, const strbrk::word& w);
 private:
-    config_data data;
+    config_data _data;
 
 };
 

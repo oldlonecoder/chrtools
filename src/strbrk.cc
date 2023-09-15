@@ -145,6 +145,20 @@ bool strbrk::s_p_s::operator++()
         return false;
     return skip_ws();
 }
+
+int strbrk::s_p_s::scan_string()
+{
+    char q = *_pos;
+    while((_pos != _end) && (*_pos != q)) ++_pos;
+    if(_pos == _end)
+    {
+        --_pos;
+        if(*_pos != q) return -1;
+    }
+    return 0;
+}
+
+
 bool strbrk::s_p_s::operator++(int)
 {
     if(_pos >= _end)
@@ -156,23 +170,83 @@ bool strbrk::s_p_s::operator++(int)
     return skip_ws();
 }
 
+
+/*!
+ * \brief strbrk::s_p_s::operator >>  Initiate a new strbrk::word instance at the current position:
+ * \param aWord
+ * \return reftoself
+ *
+ * \note Be aware that the instance of word has no end iterator yet.
+ */
 strbrk::s_p_s &strbrk::s_p_s::operator>>(strbrk::word &aWord)
 {
     aWord.begin    = _pos;
     aWord.line     = _line;
-    aWord.column      = _col;
-    aWord.offset = _index = (uint64_t) (_pos - _begin);
+    aWord.column   = _col;
+    aWord.offset   = _index = (uint64_t) (_pos - _begin);
+    aWord.str_end =  _end;
     return *this;
 }
 
-strbrk::iterator strbrk::scan_to(strbrk::iterator aStart, char c) const
+
+/*!
+ * \brief strbrk::scan_to scans to c from a - So to 'localize' the char 'c' from the iterator a and set an new iteraot iterator to the position of 'c'.
+ * \param a the start/initial position iterator from where to scan
+ * \param c the char that ends the scan
+ * \return iterator position of c
+ */
+strbrk::iterator strbrk::scan_to(strbrk::iterator a, char c) const
 {
-    strbrk::iterator p = aStart;
+    strbrk::iterator p = a;
     ++p;
-    while((p != data.c.end()) && (*p != c))
+    while((p != _data.c.end()) && (*p != c))
         ++p;
     return p;
 }
+
+bool strbrk::append(s_p_s& cursor, strbrk::config_data& dat, const strbrk::word& w)
+{
+    dat.words.push_back({w.begin, cursor._pos, cursor._end, w.line, w.column, w.offset});
+    return ++cursor;
+}
+
+
+
+///*!
+// * @brief break/split/tokenize,etc... the content of a string into pieces, including the provided delimiters as tokens if option strbrk::option::keep is set.
+// * or discarded if option strbrk::option::discard is set.
+// *
+// * If a sequence of string is surrounded by string quotes, then that `string` sequence will be put in a token, with its quote
+// * characters if keep option is set, or without them if discard option is set
+// * @param reference to a config_data instance
+// * @return number of "Words/tokens" contained into the data.words.
+//*/
+//std::size_t strbrk::operator()(strbrk::config_data& dt)
+//{
+//    if(dt.delimiters.empty())  dt.delimiters = strbrk::_default_token_separators;
+//    // dt.words must be clear()'ed
+//    dt.words.clear();
+//    s_p_s cursor(dt.c);
+
+//     // Initiate a new word with the beginning of the sequence at the current cursor position.
+//    word w;
+//    cursor >> w;
+//    while(cursor.end())
+//    {
+//        strbrk::iterator cc = cursor._pos;
+//        if(data.delimiters.find(*cc) != std::string_view::npos)
+//        {
+//            if(data.o == strbrk::keep)
+//                append(cursor, dt, w);
+//            cursor++; // and skip whitespaces. Ignore end of string here it is checked above at the loop
+//            cursor >> w; // init new word
+//            continue;
+//        }
+
+//    }
+//    return 0;
+//}
+
 
 
 /*!
@@ -182,7 +256,7 @@ strbrk::iterator strbrk::scan_to(strbrk::iterator aStart, char c) const
     * @notice : After several years of experience and experimentations, We have determined that
     * white-spaces/ctrl or spacing characters are silent and implicit delimiters, in addition to the ones supplied by \c aDelimiters.
 */
-std::size_t strbrk::operator()()
+std::size_t strbrk::operator()(strbrk::config_data& data)
 {
     std::string_view _d(data.c);
     if(_d.empty())
@@ -195,9 +269,9 @@ std::size_t strbrk::operator()()
     cursor.reset(_d);
     if(!cursor.skip_ws())
         return 0;
-
+    _data = data;
     word w;
-    cursor >> w;
+    cursor >> w; // Initiate the first word.
     while(!cursor.end())
     {
         strbrk::iterator cc = cursor._pos;
@@ -292,9 +366,10 @@ std::size_t strbrk::operator()()
         }
 
     }
+    if(cursor._pos > w.begin)
+        data.words.push_back({w.begin, cursor._pos - 1, cursor._end, w.line, w.column, w.offset});
 
-
-    return 0;
+    return data.words.size();
 }
 
 
