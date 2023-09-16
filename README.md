@@ -1,3 +1,3 @@
 #chrtools.
-My personal touch to simple and quick string tool classes
+My personal c++ not modern touch to simple and quick string tool classes
 ...
