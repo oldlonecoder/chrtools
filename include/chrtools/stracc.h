@@ -91,7 +91,7 @@ public:
     ~stracc();
 
     //...
-    stracc& operator << (color::type arg_);
+    stracc& operator << (color::code arg_);
     stracc& operator << (chattr::pair arg_);
     template<typename T> stracc& operator >> (T& out)
     {
@@ -145,7 +145,7 @@ public:
     stracc& operator += (const char* str) { _d += str; return *this; }
     stracc& operator += (char* str) { _d += str; return *this; }
     stracc& operator += (char cc) { _d += cc; return *this; }
-    stracc& operator += (color::type c_) { _d += attr< chattr::format::ansi256 >::fg(c_); return *this; }
+    stracc& operator += (color::code c_) { _d += attr< chattr::format::ansi256 >::fg(c_); return *this; }
     stracc& operator += (const stracc& acc);
     stracc& operator += (Icon::Type Ic);
     stracc& operator += (Accent::Type Ac);
@@ -156,7 +156,7 @@ public:
     stracc& operator , (const char* str) { _d += str; return *this; }
     stracc& operator , (char* str) { _d += str; return *this; }
     stracc& operator , (char cc) { _d += cc; return *this; }
-    stracc& operator , (color::type c_) { _d += attr< chattr::format::ansi256 >::fg(c_); return *this; }
+    stracc& operator , (color::code c_) { _d += attr< chattr::format::ansi256 >::fg(c_); return *this; }
     stracc& operator , (const stracc& acc);
     stracc& operator , (Icon::Type Ic);
     stracc& operator , (Accent::Type Ac);

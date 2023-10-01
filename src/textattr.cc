@@ -299,7 +299,7 @@ std::vector<color_data> ColorDB = {
  * @param C
  * @return std::string
  */
-std::string attr<chattr::format::ansi256>::fg(color::type C)
+std::string attr<chattr::format::ansi256>::fg(color::code C)
 {
     if (C == color::Reset) { return "\033[0m"; }
     std::ostringstream Out;
@@ -315,7 +315,7 @@ std::string attr<chattr::format::ansi256>::fg(color::type C)
  * @param C
  * @return std::string
  */
-std::string attr<chattr::format::ansi256>::bg(color::type C)
+std::string attr<chattr::format::ansi256>::bg(color::code C)
 {
     if (C == color::Reset) { return "\033[0m"; }
     std::ostringstream Out;
@@ -330,7 +330,7 @@ std::string attr<chattr::format::ansi256>::bg(color::type C)
  * @param C
  * @return std::string
  */
-std::string attr<chattr::format::html>::fg(color::type C)
+std::string attr<chattr::format::html>::fg(color::code C)
 {
 //    if (C == color::Reset) { return "</span>"; }
 
@@ -352,7 +352,7 @@ std::string attr<chattr::format::html>::fg(color::type C)
  * @note The colors cannot be defined by the standard W3C name. Insbookd, the generated string will be filled
  * with the  '#RRGGBB' naming.
  */
-std::string attr<chattr::format::html>::bg(color::type C)
+std::string attr<chattr::format::html>::bg(color::code C)
 {
     //if (C == color::Reset) { return "</span>"; }
     std::ostringstream Out;
@@ -414,7 +414,7 @@ chattr::pair &chattr::pair::operator>>(std::string &out)
  * @param aColorID
  * @return std::string
  */
-std::string chattr::ansi(color::type aColorID)
+std::string chattr::ansi(color::code aColorID)
 {
     if (aColorID == color::Reset) { return "\033[0m"; }
     std::ostringstream Out;
@@ -445,19 +445,19 @@ std::string chattr::ansi(chattr::pair color_pair_)
 
 
 
-color::type chattr::scan(const std::string& aName)
+color::code chattr::scan(const std::string& aName)
 {
     int N = 0;
     for (auto& Clr : ColorDB)
     {
-        if (aName == Clr.Name) return static_cast<color::type>(N);
+        if (aName == Clr.Name) return static_cast<color::code>(N);
         ++N;
     }
     return color::Reset;
 }
 
 
-std::string chattr::ansi_bk(color::type aColorID)
+std::string chattr::ansi_bk(color::code aColorID)
 {
     if (aColorID == color::Reset) { return "\033[0m"; }
     std::ostringstream Out;
@@ -467,7 +467,7 @@ std::string chattr::ansi_bk(color::type aColorID)
 }
 
 
-std::string chattr::name(color::type aColorEnum)
+std::string chattr::name(color::code aColorEnum)
 {
     return ColorDB[aColorEnum].Name.data();
 }

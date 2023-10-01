@@ -50,7 +50,7 @@ public:
  * @brief
  *
  */
-enum type : uint16_t
+    enum code : uint16_t
 {
     /*0   */ Black = 0,         //#000000	rgb(128,0,0)	hsl(0,100%,25%)
     /*1   */ Maroon,            //#800000	rgb(128,0,0)	hsl(0,100%,25%)
@@ -321,8 +321,8 @@ public:
 
     struct  STR_PUBLIC pair
     {
-        color::type fg = color::White;
-        color::type bg = color::Grey11;
+        color::code fg = color::White;
+        color::code bg = color::Grey11;
 
 
         std::string operator()() const;
@@ -335,19 +335,19 @@ public:
         ansi256, html
     };
 
-    static std::string ansi(color::type fg_color_);
+    static std::string ansi(color::code fg_color_);
     static std::string ansi(chattr::pair color_pair_);
-    static std::string ansi_bk(color::type bg_color_);
+    static std::string ansi_bk(color::code bg_color_);
     static std::string endl(chattr::format const enc = chattr::format::ansi256);
-    static color::type scan(const std::string& c_name);
-    static std::string name(color::type color_);
+    static color::code scan(const std::string& c_name);
+    static std::string name(color::code color_);
 
 };
 
 
 struct STR_PUBLIC  color_data
 {
-    color::type _enum = color::Reset;
+    color::code _enum = color::Reset;
     std::string_view  Name = " ";
     uint8_t R = 0;
     uint8_t G = 0;
@@ -361,8 +361,8 @@ template<chattr::format> class STR_PUBLIC attr : public chattr
 {
   public:
     attr() {};
-    virtual std::string fg(color::type color_);
-    virtual std::string bg(color::type color_);
+      virtual std::string fg(color::code color_);
+    virtual std::string bg(color::code color_);
     virtual std::string endl();
 
 };
@@ -370,22 +370,22 @@ template<chattr::format> class STR_PUBLIC attr : public chattr
 template<> class STR_PUBLIC attr<chattr::format::ansi256> : public chattr
 {
 public:
-    static std::string fg(color::type color_);
-    static std::string bg(color::type color_);
+    static std::string fg(color::code color_);
+    static std::string bg(color::code color_);
     static std::string endl();
 };
 
 template<> class  STR_PUBLIC attr<chattr::format::html> : public chattr
 {
 public:
-    static std::string fg(color::type color_);
-    static std::string bg(color::type color_);
+    static std::string fg(color::code color_);
+    static std::string bg(color::code color_);
     static std::string endl();
 };
 
 
 
-inline STR_PUBLIC std::ostream&   operator << (std::ostream& stream_, color::type c_)
+inline STR_PUBLIC std::ostream&   operator << (std::ostream& stream_, color::code c_)
 {
     return stream_ << attr<chattr::format::ansi256>::fg(c_);
 }

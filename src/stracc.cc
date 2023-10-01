@@ -107,7 +107,7 @@ stracc& stracc::operator << (chattr::pair arg_)
 }
 
 
-stracc& stracc::operator<<(color::type arg_)
+stracc& stracc::operator<<(color::code arg_)
 {
     return _format(attr<chattr::format::ansi256>::fg(arg_));
 }
