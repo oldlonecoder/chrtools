@@ -74,11 +74,12 @@ private:
         {}
 
         std::string operator()();
+        operator std::string(){ return (*this)(); }
 
     };
 
     std::string::size_type _scan_arg(std::string::size_type _pos = 0);
-
+    operator std::string(){ return (*this)(); }
     template<typename T> stracc& _format(const T& _argv);
 public:
 
